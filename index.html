@@ -30,8 +30,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 .hero-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;height:100%;}
 .char-scene{position:relative;width:clamp(280px,44vw,560px);aspect-ratio:.78;}
 .char-wrap{width:100%;height:100%;will-change:transform;transform-style:preserve-3d;}
-.char-img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;filter:drop-shadow(0 0 50px rgba(225,29,72,.18)) drop-shadow(0 24px 70px rgba(0,0,0,1));pointer-events:none;}
+
+/* character clickable → LinkedIn */
+.char-link{display:block;width:100%;height:100%;cursor:pointer;position:relative;}
+.char-link::after{
+  content:'View LinkedIn';
+  position:absolute;bottom:18%;left:50%;transform:translateX(-50%) translateY(6px);
+  background:rgba(10,10,10,.85);border:1px solid rgba(225,29,72,.35);
+  color:#e11d48;font-family:'DM Sans',sans-serif;font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.4rem 1rem;border-radius:100px;
+  opacity:0;transition:opacity .25s,transform .25s;
+  white-space:nowrap;backdrop-filter:blur(8px);pointer-events:none;
+}
+.char-link:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.char-img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;filter:drop-shadow(0 0 50px rgba(225,29,72,.18)) drop-shadow(0 24px 70px rgba(0,0,0,1));transition:filter .3s;}
+.char-link:hover .char-img{filter:drop-shadow(0 0 70px rgba(225,29,72,.32)) drop-shadow(0 24px 70px rgba(0,0,0,1));}
 .char-shadow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:50%;height:22px;background:radial-gradient(ellipse,rgba(225,29,72,.18) 0%,transparent 70%);border-radius:50%;filter:blur(10px);pointer-events:none;}
+
+/* chips */
 .chip{position:absolute;background:rgba(8,8,8,.93);border:.5px solid rgba(225,29,72,.2);border-radius:12px;padding:clamp(.45rem,.8vh,.65rem) clamp(.8rem,1.2vw,1.1rem);font-size:clamp(.65rem,.9vw,.78rem);color:rgba(255,255,255,.6);pointer-events:none;display:flex;align-items:center;gap:6px;white-space:nowrap;z-index:4;box-shadow:0 4px 20px rgba(0,0,0,.4);}
 .chip-dot{width:6px;height:6px;border-radius:50%;background:#e11d48;flex-shrink:0;}
 .chip-1{top:8%;left:-14%;animation:float 3.5s ease-in-out infinite;}
@@ -42,11 +60,37 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 .chip-6{bottom:10%;right:-18%;animation:float 3.6s ease-in-out infinite .9s;}
 .chip-7{top:72%;left:-20%;animation:float 3.9s ease-in-out infinite 1.4s;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
 .scroll-hint{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:.5rem;color:rgba(255,255,255,.18);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;animation:bob 2.2s ease-in-out infinite;padding-bottom:.5rem;}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 .scroll-arrow{width:10px;height:10px;border-right:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);transform:rotate(45deg);}
 
-/* PROJECTS */
+/* ══════════════════════════════
+   SKILLS — NEURAL NETWORK
+══════════════════════════════ */
+#skills{
+  padding:clamp(3rem,6vh,5rem) 0 clamp(3rem,6vh,5rem);
+  background:#000;
+  position:relative;
+  overflow:hidden;
+}
+.skills-header{
+  text-align:center;
+  margin-bottom:clamp(1.5rem,3vh,2.5rem);
+  padding:0 2rem;
+}
+.skills-label{font-size:clamp(.62rem,.9vw,.72rem);letter-spacing:.28em;text-transform:uppercase;color:#e11d48;margin-bottom:.7rem;}
+.skills-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5.5vw,5.5rem);letter-spacing:.04em;color:#fff;line-height:1;}
+.skills-title span{color:#e11d48;}
+#neuralCanvas{display:block;width:100%;height:clamp(420px,60vh,680px);cursor:crosshair;}
+.nn-tooltip{position:fixed;pointer-events:none;z-index:200;background:rgba(8,8,8,.95);border:1px solid rgba(225,29,72,.35);border-radius:8px;padding:.45rem .9rem;font-family:'DM Sans',sans-serif;font-size:.78rem;color:#fff;white-space:nowrap;opacity:0;transition:opacity .15s;transform:translate(-50%,-130%);}
+.nn-tooltip.show{opacity:1;}
+.nn-labels{display:flex;justify-content:space-around;max-width:100%;padding:0 2rem;margin-top:.6rem;}
+.nn-layer-label{font-size:clamp(.55rem,.7vw,.65rem);letter-spacing:.2em;text-transform:uppercase;color:rgba(225,29,72,.6);text-align:center;flex:1;}
+
+/* ══════════════════════════════
+   PROJECTS
+══════════════════════════════ */
 #projects{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:clamp(5rem,9vh,7rem) clamp(1.5rem,4vw,3.5rem) clamp(3rem,6vh,5rem);background:#000;overflow:hidden;}
 .projects-ambient{position:absolute;inset:0;pointer-events:none;transition:background .8s ease;opacity:.18;filter:blur(80px);}
 .projects-label{font-size:clamp(.62rem,.9vw,.72rem);letter-spacing:.28em;text-transform:uppercase;color:#e11d48;margin-bottom:.7rem;text-align:center;}
@@ -69,7 +113,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 .proj-card.active .card-desc{display:block;}
 .proj-card.active{box-shadow:0 24px 70px rgba(225,29,72,.28),0 0 0 1px rgba(225,29,72,.22);}
 .player-bar{display:flex;align-items:center;background:rgba(15,15,15,.92);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:clamp(.65rem,1.2vh,1rem) clamp(1rem,2vw,1.8rem);width:min(760px,90vw);gap:.6rem;}
-.player-thumb{width:clamp(38px,4.5vw,52px);height:clamp(38px,4.5vw,52px);border-radius:10px;background-size:cover;flex-shrink:0;margin-right:.8rem;border:1px solid rgba(255,255,255,.1);transition:background .4s ease;}
+.player-thumb{width:clamp(38px,4.5vw,52px);height:clamp(38px,4.5vw,52px);border-radius:10px;flex-shrink:0;margin-right:.8rem;border:1px solid rgba(255,255,255,.1);transition:background .4s ease;}
 .player-info{flex:1;min-width:0;}
 .player-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(.95rem,1.4vw,1.2rem);letter-spacing:.05em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .player-sub{font-size:clamp(.62rem,.88vw,.72rem);color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -85,116 +129,29 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s;cursor:pointer;}
 .dot.active{background:#e11d48;}
 
-/* ══════════════════════════════
-   CONTACT MODAL OVERLAY
-══════════════════════════════ */
-.contact-overlay{
-  position:fixed;inset:0;z-index:500;
-  display:flex;align-items:center;justify-content:center;
-  padding:1rem;
-  background:rgba(0,0,0,0);
-  backdrop-filter:blur(0px);
-  pointer-events:none;
-  transition:background .35s ease, backdrop-filter .35s ease;
-}
-.contact-overlay.open{
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(18px);
-  pointer-events:all;
-}
-
-.contact-modal{
-  width:min(560px,96vw);
-  background:rgba(8,8,8,.97);
-  border:1px solid rgba(225,29,72,.25);
-  border-radius:24px;
-  padding:clamp(2rem,5vh,3rem) clamp(1.8rem,4vw,3rem);
-  position:relative;
-  transform:translateY(40px) scale(.96);
-  opacity:0;
-  transition:transform .4s cubic-bezier(.22,.68,0,1.15), opacity .35s ease;
-}
-.contact-overlay.open .contact-modal{
-  transform:translateY(0) scale(1);
-  opacity:1;
-}
-
-/* red top accent */
-.contact-modal::before{
-  content:'';position:absolute;top:-1px;left:2.5rem;
-  width:64px;height:3px;background:#e11d48;border-radius:2px;
-}
-
-.modal-close{
-  position:absolute;top:1.2rem;right:1.4rem;
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.12);
-  background:transparent;color:rgba(255,255,255,.5);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;line-height:1;
-  transition:background .2s,color .2s,border-color .2s;
-}
+/* CONTACT MODAL */
+.contact-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0);backdrop-filter:blur(0px);pointer-events:none;transition:background .35s ease,backdrop-filter .35s ease;}
+.contact-overlay.open{background:rgba(0,0,0,.78);backdrop-filter:blur(18px);pointer-events:all;}
+.contact-modal{width:min(560px,96vw);background:rgba(8,8,8,.97);border:1px solid rgba(225,29,72,.25);border-radius:24px;padding:clamp(2rem,5vh,3rem) clamp(1.8rem,4vw,3rem);position:relative;transform:translateY(40px) scale(.96);opacity:0;transition:transform .4s cubic-bezier(.22,.68,0,1.15),opacity .35s ease;}
+.contact-overlay.open .contact-modal{transform:translateY(0) scale(1);opacity:1;}
+.contact-modal::before{content:'';position:absolute;top:-1px;left:2.5rem;width:64px;height:3px;background:#e11d48;border-radius:2px;}
+.modal-close{position:absolute;top:1.2rem;right:1.4rem;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:background .2s,color .2s,border-color .2s;}
 .modal-close:hover{background:rgba(225,29,72,.15);color:#e11d48;border-color:rgba(225,29,72,.3);}
-
 .modal-label{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:#e11d48;margin-bottom:.8rem;}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:.04em;line-height:.95;color:#fff;margin-bottom:.5rem;}
 .modal-title span{color:#e11d48;}
 .modal-sub{font-size:clamp(.78rem,1.1vw,.9rem);color:rgba(255,255,255,.38);margin-bottom:2rem;line-height:1.6;}
-
-/* form fields */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .form-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem;}
-.form-group:last-of-type{margin-bottom:0;}
 .form-label{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);}
-.form-input,.form-textarea{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:10px;
-  padding:.75rem 1rem;
-  color:#fff;
-  font-family:'DM Sans',sans-serif;
-  font-size:.9rem;
-  outline:none;
-  transition:border-color .2s,background .2s;
-  width:100%;
-  resize:none;
-}
+.form-input,.form-textarea{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.75rem 1rem;color:#fff;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,background .2s;width:100%;resize:none;}
 .form-input::placeholder,.form-textarea::placeholder{color:rgba(255,255,255,.2);}
-.form-input:focus,.form-textarea:focus{
-  border-color:rgba(225,29,72,.5);
-  background:rgba(225,29,72,.04);
-}
+.form-input:focus,.form-textarea:focus{border-color:rgba(225,29,72,.5);background:rgba(225,29,72,.04);}
 .form-textarea{height:110px;}
-
-.form-submit{
-  width:100%;
-  margin-top:1.4rem;
-  padding:.85rem 2rem;
-  background:#e11d48;
-  color:#fff;
-  border:none;border-radius:100px;
-  font-family:'DM Sans',sans-serif;
-  font-size:.82rem;font-weight:500;
-  letter-spacing:.12em;text-transform:uppercase;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:.6rem;
-  transition:background .2s,transform .15s;
-}
+.form-submit{width:100%;margin-top:1.4rem;padding:.85rem 2rem;background:#e11d48;color:#fff;border:none;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:background .2s,transform .15s;}
 .form-submit:hover{background:#be123c;transform:translateY(-2px);}
-.form-submit:active{transform:translateY(0);}
-
-/* success state */
-.form-success{
-  display:none;
-  flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;gap:1rem;padding:2rem 0 1rem;
-}
-.success-icon{
-  width:60px;height:60px;border-radius:50%;
-  background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;
-}
+.form-success{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1rem;padding:2rem 0 1rem;}
+.success-icon{width:60px;height:60px;border-radius:50%;background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.3);display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
 .success-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.05em;color:#fff;}
 .success-sub{font-size:.88rem;color:rgba(255,255,255,.42);line-height:1.6;}
 
@@ -228,7 +185,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 
 <nav>
   <a class="nav-logo" href="#home">AR</a>
-  <button class="nav-cta" id="hireBtn">Hire Me</button>
+  <button class="nav-cta" id="connectBtn">Connect</button>
 </nav>
 
 <!-- HERO -->
@@ -256,12 +213,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
         <div class="chip chip-5"><span class="chip-dot"></span>Power BI</div>
         <div class="chip chip-6"><span class="chip-dot"></span>Machine Learning</div>
         <div class="chip chip-7"><span class="chip-dot"></span>Scikit-learn</div>
-        <img class="char-img" 
-<img class="char-img" src="character.png">
+        <a class="char-link" href="https://www.linkedin.com/in/anugrah-rahi-a8421429a/" target="_blank" rel="noopener">
+          <img class="char-img" src="character.png" alt="Anugrah Rahi"/>
+        </a>
       </div>
     </div>
   </div>
   <div class="scroll-hint"><span>Scroll</span><div class="scroll-arrow"></div></div>
+</section>
+
+<!-- SKILLS — NEURAL NETWORK -->
+<section id="skills">
+  <div class="skills-header">
+    <div class="skills-label">// What I Work With</div>
+    <h2 class="skills-title">MY <span>SKILLS</span></h2>
+  </div>
+  <canvas id="neuralCanvas"></canvas>
+  <div class="nn-labels" id="nnLabels"></div>
+  <div class="nn-tooltip" id="nnTooltip"></div>
 </section>
 
 <!-- PROJECTS -->
@@ -294,46 +263,47 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 
 <!-- CONTACT MODAL -->
 <div class="contact-overlay" id="contactOverlay">
-  <div class="contact-modal" id="contactModal">
+  <div class="contact-modal">
     <button class="modal-close" id="modalClose">✕</button>
     <div class="modal-label">// Get in touch</div>
     <h2 class="modal-title">LET'S BUILD<br><span>SOMETHING.</span></h2>
-    <p class="modal-sub">Have a project in mind or just want to talk data? Drop me a message and I'll get back to you within 24 hours.</p>
+    <p class="modal-sub">Have a project in mind or just want to talk data? Drop a message and I'll get back within 24 hours.</p>
 
-    <div id="contactForm">
+    <form id="contactForm" action="https://formspree.io/f/rahianugrahh@gmail.com" method="POST">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">First Name</label>
-          <input class="form-input" type="text" placeholder="John" id="fieldFirst"/>
+          <input class="form-input" type="text" name="first_name" placeholder="John" required/>
         </div>
         <div class="form-group">
           <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" placeholder="Doe" id="fieldLast"/>
+          <input class="form-input" type="text" name="last_name" placeholder="Doe"/>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input class="form-input" type="email" placeholder="john@company.com" id="fieldEmail"/>
+        <input class="form-input" type="email" name="email" placeholder="john@company.com" required/>
       </div>
       <div class="form-group">
         <label class="form-label">Subject</label>
-        <input class="form-input" type="text" placeholder="Project inquiry / Collaboration / Just saying hi" id="fieldSubject"/>
+        <input class="form-input" type="text" name="subject" placeholder="Project inquiry / Collaboration / Just saying hi"/>
       </div>
       <div class="form-group">
         <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="Tell me about your project, goals, timeline..." id="fieldMsg"></textarea>
+        <textarea class="form-textarea" name="message" placeholder="Tell me about your project, goals, timeline..." required></textarea>
       </div>
-      <button class="form-submit" id="formSubmit">
+      <!-- hidden redirect field — keeps user on same page -->
+      <input type="hidden" name="_next" value="javascript:void(0)"/>
+      <button type="submit" class="form-submit">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         Send Message
       </button>
-    </div>
+    </form>
 
-    <!-- success screen -->
     <div class="form-success" id="formSuccess">
       <div class="success-icon">🎯</div>
       <div class="success-title">Message Sent!</div>
-      <p class="success-sub">Thanks for reaching out, I'll get back to you within 24 hours.<br/>Let's build something great together.</p>
+      <p class="success-sub">Thanks for reaching out — I'll reply within 24 hours.<br/>Let's build something great.</p>
     </div>
   </div>
 </div>
@@ -353,50 +323,201 @@ window.addEventListener('mousemove',e=>{
 })();
 
 /* CONTACT MODAL */
-const overlay  = document.getElementById('contactOverlay');
-const hireBtn  = document.getElementById('hireBtn');
-const closeBtn = document.getElementById('modalClose');
-const formEl   = document.getElementById('contactForm');
-const successEl= document.getElementById('formSuccess');
-const submitBtn= document.getElementById('formSubmit');
+const overlay  =document.getElementById('contactOverlay');
+const closeBtn =document.getElementById('modalClose');
+const formEl   =document.getElementById('contactForm');
+const successEl=document.getElementById('formSuccess');
 
-function openModal(){
-  overlay.classList.add('open');
-  document.body.style.overflow='hidden';
-  // reset to form view
-  formEl.style.display='block';
-  successEl.style.display='none';
-}
-function closeModal(){
-  overlay.classList.remove('open');
-  document.body.style.overflow='';
-}
+function openModal(){overlay.classList.add('open');document.body.style.overflow='hidden';formEl.style.display='block';successEl.style.display='none';}
+function closeModal(){overlay.classList.remove('open');document.body.style.overflow='';}
 
-hireBtn.addEventListener('click', openModal);
-closeBtn.addEventListener('click', closeModal);
-overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+document.getElementById('connectBtn').addEventListener('click',openModal);
+closeBtn.addEventListener('click',closeModal);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-submitBtn.addEventListener('click', ()=>{
-  const first = document.getElementById('fieldFirst').value.trim();
-  const email = document.getElementById('fieldEmail').value.trim();
-  const msg   = document.getElementById('fieldMsg').value.trim();
-  if(!first || !email || !msg){
-    // shake animation on empty
-    submitBtn.style.animation='none';
-    submitBtn.style.transform='translateX(-6px)';
-    setTimeout(()=>submitBtn.style.transform='translateX(6px)',80);
-    setTimeout(()=>submitBtn.style.transform='translateX(-4px)',160);
-    setTimeout(()=>submitBtn.style.transform='',240);
-    return;
-  }
-  // In production, replace this with your email service (Formspree, EmailJS etc.)
-  // For now, show success screen
-  formEl.style.display='none';
-  successEl.style.display='flex';
-  // auto-close after 3s
-  setTimeout(closeModal, 3200);
+/* Formspree AJAX submission → stays on page, shows success */
+formEl.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=formEl.querySelector('.form-submit');
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const res=await fetch('https://formspree.io/f/YOUR_FORM_ID',{
+      method:'POST',
+      body:new FormData(formEl),
+      headers:{Accept:'application/json'}
+    });
+    if(res.ok){
+      formEl.style.display='none';
+      successEl.style.display='flex';
+      setTimeout(closeModal,3200);
+    } else {
+      btn.textContent='Try Again';btn.disabled=false;
+    }
+  } catch{btn.textContent='Try Again';btn.disabled=false;}
 });
+
+/* ── NEURAL NETWORK SKILLS ── */
+(function(){
+  const layers=[
+    {label:'Programming', nodes:['Python','SQL','HTML / CSS']},
+    {label:'Libraries',   nodes:['Pandas','NumPy','Matplotlib','Seaborn','Plotly','Scikit-learn']},
+    {label:'AI & Data',   nodes:['EDA','Statistical Analysis','A/B Testing','Data Cleaning','Data Visualization','Data Analytics','Prompt Eng.','Gen AI (LLMs)']},
+    {label:'Databases',   nodes:['MySQL','PostgreSQL','SQL Server']},
+    {label:'Tools',       nodes:['Tableau','Power BI','Jupyter','Excel','Git / GitHub','Postman']},
+    {label:'Cloud',       nodes:['AWS S3','AWS Lambda','AWS Glue']},
+    {label:'Output',      nodes:['AR']},
+  ];
+  const edgeMap=[
+    [[0,0],[1,0]],[[0,0],[1,1]],[[0,0],[1,2]],[[0,0],[1,3]],[[0,0],[1,4]],[[0,0],[1,5]],
+    [[0,1],[3,0]],[[0,1],[3,1]],[[0,1],[3,2]],
+    [[0,2],[4,0]],[[0,2],[4,1]],
+    [[1,0],[2,0]],[[1,0],[2,3]],[[1,0],[2,1]],[[1,0],[2,5]],
+    [[1,1],[2,1]],[[1,1],[2,2]],[[1,1],[2,0]],
+    [[1,2],[2,4]],[[1,2],[2,0]],
+    [[1,3],[2,4]],[[1,3],[2,0]],[[1,3],[2,1]],
+    [[1,4],[2,4]],[[1,4],[2,5]],
+    [[1,5],[2,1]],[[1,5],[2,2]],[[1,5],[2,5]],[[1,5],[2,0]],
+    [[2,0],[4,2]],[[2,0],[4,0]],[[2,0],[4,1]],
+    [[2,1],[4,2]],[[2,1],[4,3]],[[2,1],[4,0]],
+    [[2,2],[4,2]],[[2,2],[4,3]],
+    [[2,3],[4,2]],
+    [[2,4],[4,0]],[[2,4],[4,1]],
+    [[2,5],[4,0]],[[2,5],[4,1]],[[2,5],[4,3]],
+    [[2,6],[4,5]],[[2,6],[4,4]],
+    [[2,7],[4,5]],[[2,7],[4,4]],
+    [[3,0],[4,2]],[[3,0],[4,3]],[[3,0],[5,0]],[[3,0],[5,2]],
+    [[3,1],[4,2]],[[3,1],[4,3]],[[3,1],[5,0]],[[3,1],[5,2]],
+    [[3,2],[4,2]],[[3,2],[4,3]],[[3,2],[5,0]],
+    [[4,2],[5,1]],
+    [[4,4],[5,1]],[[4,4],[5,2]],
+    [[4,5],[5,1]],
+    [[4,0],[6,0]],[[4,1],[6,0]],[[4,2],[6,0]],
+    [[4,3],[6,0]],[[4,4],[6,0]],[[4,5],[6,0]],
+    [[5,0],[6,0]],[[5,1],[6,0]],[[5,2],[6,0]],
+  ];
+  const canvas=document.getElementById('neuralCanvas');
+  const tooltip=document.getElementById('nnTooltip');
+  const labelsEl=document.getElementById('nnLabels');
+  const ctx=canvas.getContext('2d');
+  labelsEl.innerHTML=layers.map(l=>`<div class="nn-layer-label">${l.label}</div>`).join('');
+  let nodes=[],W=0,H=0,builtEdges=[],hoveredNode=null,pulses=[],animId=null,entered=false;
+  function nk(li,ni){return li+':'+ni;}
+  function build(){
+    W=canvas.offsetWidth;H=canvas.offsetHeight;
+    canvas.width=W*devicePixelRatio;canvas.height=H*devicePixelRatio;
+    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    nodes=[];
+    const nL=layers.length,padX=W*.04,usableW=W-padX*2;
+    layers.forEach((layer,li)=>{
+      const x=padX+(li/(nL-1))*usableW,n=layer.nodes.length;
+      const padY=H*.08,usableH=H-padY*2;
+      layer.nodes.forEach((name,ni)=>{
+        const y=n===1?H/2:padY+(ni/(n-1))*usableH;
+        nodes.push({x,y,name,layer:li,ni,alpha:0,r:0,isOutput:li===nL-1,key:nk(li,ni)});
+      });
+    });
+    const nm={};nodes.forEach(nd=>{nm[nd.key]=nd;});
+    builtEdges=edgeMap.map(([f,t])=>({f:nm[nk(f[0],f[1])],t:nm[nk(t[0],t[1])]})).filter(e=>e.f&&e.t);
+  }
+  const secObs=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&!entered){entered=true;nodes.forEach((nd,i)=>setTimeout(()=>{nd.target=1;},i*28));}
+  },{threshold:.15});
+  secObs.observe(canvas);
+  setInterval(()=>{
+    if(!builtEdges.length)return;
+    const e=builtEdges[Math.floor(Math.random()*builtEdges.length)];
+    if(e.f.alpha<.5)return;
+    pulses.push({f:e.f,t:e.t,p:0,speed:.016+Math.random()*.014});
+  },500);
+  function bpt(f,t,p){
+    const mx1=f.x+(t.x-f.x)*.4,mx2=f.x+(t.x-f.x)*.6,mt=1-p;
+    return{x:mt*mt*mt*f.x+3*mt*mt*p*mx1+3*mt*p*p*mx2+p*p*p*t.x,
+           y:mt*mt*mt*f.y+3*mt*mt*p*f.y+3*mt*p*p*t.y+p*p*p*t.y};
+  }
+  function drawEdge(f,t,alpha,highlight,dimmed){
+    const mx1=f.x+(t.x-f.x)*.4,mx2=f.x+(t.x-f.x)*.6;
+    ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.bezierCurveTo(mx1,f.y,mx2,t.y,t.x,t.y);
+    if(highlight){ctx.strokeStyle=`rgba(225,29,72,${alpha*.75})`;ctx.lineWidth=1.5;}
+    else if(dimmed){ctx.strokeStyle=`rgba(255,255,255,${alpha*.025})`;ctx.lineWidth=.5;}
+    else{ctx.strokeStyle=`rgba(255,255,255,${alpha*.08})`;ctx.lineWidth=.7;}
+    ctx.stroke();
+  }
+  function drawNode(nd){
+    const r=nd.r||0,a=nd.alpha||0;if(a<.01)return;
+    const isHov=nd===hoveredNode,nL=layers.length;
+    if(nd.isOutput){
+      const pulse=.5+.5*Math.sin(Date.now()*.003);
+      ctx.beginPath();ctx.arc(nd.x,nd.y,r+10+pulse*4,0,Math.PI*2);ctx.strokeStyle=`rgba(225,29,72,${a*.12})`;ctx.lineWidth=1;ctx.stroke();
+      ctx.beginPath();ctx.arc(nd.x,nd.y,r+5,0,Math.PI*2);ctx.strokeStyle=`rgba(225,29,72,${a*.3})`;ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.arc(nd.x,nd.y,r,0,Math.PI*2);
+      ctx.fillStyle=isHov?`rgba(225,29,72,${a})`:`rgba(225,29,72,${a*.9})`;ctx.fill();
+      ctx.strokeStyle=`rgba(255,255,255,${a*.4})`;ctx.lineWidth=1.5;ctx.stroke();
+      ctx.font=`bold ${Math.max(12,r*.72)}px 'Bebas Neue',sans-serif`;
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.fillText('AR',nd.x,nd.y);
+      return;
+    }
+    if(isHov){
+      ctx.beginPath();ctx.arc(nd.x,nd.y,r+8,0,Math.PI*2);ctx.fillStyle='rgba(225,29,72,.08)';ctx.fill();
+      ctx.beginPath();ctx.arc(nd.x,nd.y,r+4,0,Math.PI*2);ctx.fillStyle='rgba(225,29,72,.15)';ctx.fill();
+    }
+    ctx.beginPath();ctx.arc(nd.x,nd.y,r,0,Math.PI*2);
+    ctx.fillStyle=isHov?`rgba(225,29,72,${a})`:`rgba(14,14,14,${a})`;ctx.fill();
+    ctx.strokeStyle=isHov?`rgba(225,29,72,${a})`:`rgba(255,255,255,${a*.28})`;ctx.lineWidth=1;ctx.stroke();
+    const fs=Math.max(8,Math.min(10.5,W*.008));
+    ctx.font=`${fs}px 'DM Sans',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=isHov?`rgba(255,255,255,${a})`:`rgba(255,255,255,${a*.7})`;
+    const maxW=(W/(nL+1))*.82,words=nd.name.split(' ');
+    if(ctx.measureText(nd.name).width>maxW&&words.length>1){
+      const mid=Math.ceil(words.length/2);
+      ctx.fillText(words.slice(0,mid).join(' '),nd.x,nd.y-fs*.6);
+      ctx.fillText(words.slice(mid).join(' '),nd.x,nd.y+fs*.6);
+    } else {
+      let lbl=nd.name;while(ctx.measureText(lbl).width>maxW&&lbl.length>4)lbl=lbl.slice(0,-2)+'…';
+      ctx.fillText(lbl,nd.x,nd.y);
+    }
+  }
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(nd=>{
+      if(nd.target&&nd.alpha<1)nd.alpha=Math.min(1,nd.alpha+.035);
+      const tR=nd.isOutput?(W<600?26:32):(W<600?16:20);
+      if(nd.r<tR&&nd.alpha>.05)nd.r=Math.min(tR,nd.r+1);
+    });
+    builtEdges.forEach(({f,t})=>{
+      const alpha=Math.min(f.alpha,t.alpha);
+      const hl=hoveredNode&&(f===hoveredNode||t===hoveredNode);
+      drawEdge(f,t,alpha,hl,hoveredNode&&!hl);
+    });
+    for(let i=pulses.length-1;i>=0;i--){
+      const pu=pulses[i];pu.p+=pu.speed;
+      if(pu.p>1){pulses.splice(i,1);continue;}
+      const pt=bpt(pu.f,pu.t,pu.p),fade=Math.sin(pu.p*Math.PI);
+      ctx.beginPath();ctx.arc(pt.x,pt.y,3.5,0,Math.PI*2);ctx.fillStyle=`rgba(225,29,72,${fade*.95})`;ctx.fill();
+      ctx.beginPath();ctx.arc(pt.x,pt.y,7,0,Math.PI*2);ctx.fillStyle=`rgba(225,29,72,${fade*.22})`;ctx.fill();
+    }
+    nodes.filter(n=>!n.isOutput).forEach(drawNode);
+    nodes.filter(n=>n.isOutput).forEach(drawNode);
+    animId=requestAnimationFrame(loop);
+  }
+  function hitTest(mx,my){return nodes.find(nd=>{const dx=nd.x-mx,dy=nd.y-my;return Math.sqrt(dx*dx+dy*dy)<nd.r+8;})||null;}
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    hoveredNode=hitTest(e.clientX-rect.left,e.clientY-rect.top);
+    if(hoveredNode){
+      tooltip.textContent=hoveredNode.isOutput?'Anugrah Rahi — Data Analyst':hoveredNode.name;
+      tooltip.style.left=e.clientX+'px';tooltip.style.top=e.clientY+'px';
+      tooltip.classList.add('show');canvas.style.cursor='pointer';
+    } else {tooltip.classList.remove('show');canvas.style.cursor='crosshair';}
+  });
+  canvas.addEventListener('mouseleave',()=>{hoveredNode=null;tooltip.classList.remove('show');});
+  canvas.addEventListener('click',()=>{
+    if(hoveredNode&&hoveredNode.isOutput)window.open('https://www.linkedin.com/in/anugrah-rahi-a8421429a/','_blank');
+  });
+  function init(){build();loop();}
+  window.addEventListener('resize',()=>{cancelAnimationFrame(animId);build();loop();});
+  document.fonts.ready.then(init);
+})();
 
 /* PROJECTS */
 const GITHUB='https://github.com/RAHIANUGRAHH';
