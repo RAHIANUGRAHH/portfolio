@@ -198,8 +198,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
     </div>
     <div class="hero-sub">Turning raw data into bold decisions</div>
     <div class="hero-quote">
-      <p class="quote-text">"I don't just crunch numbers — I make them <strong>confess</strong>. The data is noisy. I'm the filter that turns chaos into clarity, and questions into answers that actually <strong>move the needle</strong>."</p>
-      <div class="quote-attr">— Anugrah Rahi, Data Analyst</div>
+      <p class="quote-text">"I turn raw data into stories that hit harder than assumptions. Turning messy datasets into decisions, insights, and outcomes that actually matter."</p>
     </div>
   </div>
   <div class="hero-right">
@@ -262,6 +261,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
 </section>
 
 <!-- CONTACT MODAL -->
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <div class="contact-overlay" id="contactOverlay">
   <div class="contact-modal">
     <button class="modal-close" id="modalClose">✕</button>
@@ -269,36 +271,34 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content
     <h2 class="modal-title">LET'S BUILD<br><span>SOMETHING.</span></h2>
     <p class="modal-sub">Have a project in mind or just want to talk data? Drop a message and I'll get back within 24 hours.</p>
 
-    <form id="contactForm" action="https://formspree.io/f/rahianugrahh@gmail.com" method="POST">
+    <div id="contactForm">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">First Name</label>
-          <input class="form-input" type="text" name="first_name" placeholder="John" required/>
+          <input class="form-input" type="text" id="cf_first" placeholder="John" required/>
         </div>
         <div class="form-group">
           <label class="form-label">Last Name</label>
-          <input class="form-input" type="text" name="last_name" placeholder="Doe"/>
+          <input class="form-input" type="text" id="cf_last" placeholder="Doe"/>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input class="form-input" type="email" name="email" placeholder="john@company.com" required/>
+        <input class="form-input" type="email" id="cf_email" placeholder="john@company.com" required/>
       </div>
       <div class="form-group">
         <label class="form-label">Subject</label>
-        <input class="form-input" type="text" name="subject" placeholder="Project inquiry / Collaboration / Just saying hi"/>
+        <input class="form-input" type="text" id="cf_subject" placeholder="Project inquiry / Collaboration / Just saying hi"/>
       </div>
       <div class="form-group">
         <label class="form-label">Message</label>
-        <textarea class="form-textarea" name="message" placeholder="Tell me about your project, goals, timeline..." required></textarea>
+        <textarea class="form-textarea" id="cf_message" placeholder="Tell me about your project, goals, timeline..." required></textarea>
       </div>
-      <!-- hidden redirect field — keeps user on same page -->
-      <input type="hidden" name="_next" value="javascript:void(0)"/>
-      <button type="submit" class="form-submit">
+      <button class="form-submit" id="cf_submit">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         Send Message
       </button>
-    </form>
+    </div>
 
     <div class="form-success" id="formSuccess">
       <div class="success-icon">🎯</div>
@@ -323,38 +323,87 @@ window.addEventListener('mousemove',e=>{
 })();
 
 /* CONTACT MODAL */
-const overlay  =document.getElementById('contactOverlay');
-const closeBtn =document.getElementById('modalClose');
-const formEl   =document.getElementById('contactForm');
-const successEl=document.getElementById('formSuccess');
+const overlay  = document.getElementById('contactOverlay');
+const closeBtn = document.getElementById('modalClose');
+const formEl   = document.getElementById('contactForm');
+const successEl= document.getElementById('formSuccess');
 
-function openModal(){overlay.classList.add('open');document.body.style.overflow='hidden';formEl.style.display='block';successEl.style.display='none';}
-function closeModal(){overlay.classList.remove('open');document.body.style.overflow='';}
+function openModal(){
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+  formEl.style.display='block';
+  successEl.style.display='none';
+}
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
 
-document.getElementById('connectBtn').addEventListener('click',openModal);
-closeBtn.addEventListener('click',closeModal);
-overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.getElementById('connectBtn').addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-/* Formspree AJAX submission → stays on page, shows success */
-formEl.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const btn=formEl.querySelector('.form-submit');
-  btn.textContent='Sending...';btn.disabled=true;
-  try{
-    const res=await fetch('https://formspree.io/f/YOUR_FORM_ID',{
-      method:'POST',
-      body:new FormData(formEl),
-      headers:{Accept:'application/json'}
+/* ── EmailJS — fill in your 3 IDs below ──
+   1. Go to https://www.emailjs.com → sign up free
+   2. Add Email Service → connect Gmail → copy Service ID
+   3. Create Email Template (see instructions below) → copy Template ID
+   4. Go to Account → copy Public Key
+   ─────────────────────────────────────── */
+const EJS_PUBLIC_KEY  = '-Jxp8hf8NXAaGgdIe';
+const EJS_SERVICE_ID  = 'service_052p29p';
+const EJS_TEMPLATE_ID = 'template_rbp1d2b';
+
+/* Template variables to set in EmailJS dashboard:
+   To email:   rahianugrahh@gmail.com  (set in template "To Email" field)
+   Subject:    New message from {{from_name}} — {{subject}}
+   Body:
+     Name:    {{from_name}}
+     Email:   {{reply_to}}
+     Subject: {{subject}}
+     Message: {{message}}
+*/
+
+emailjs.init(EJS_PUBLIC_KEY);
+
+document.getElementById('cf_submit').addEventListener('click', async ()=>{
+  const first   = document.getElementById('cf_first').value.trim();
+  const last    = document.getElementById('cf_last').value.trim();
+  const email   = document.getElementById('cf_email').value.trim();
+  const subject = document.getElementById('cf_subject').value.trim();
+  const message = document.getElementById('cf_message').value.trim();
+
+  if(!first || !email || !message){
+    // shake invalid fields
+    [!first&&'cf_first', !email&&'cf_email', !message&&'cf_message']
+      .filter(Boolean).forEach(id=>{
+        const el=document.getElementById(id);
+        el.style.borderColor='#e11d48';
+        el.style.animation='none';
+        setTimeout(()=>{ el.style.borderColor=''; },1800);
+      });
+    return;
+  }
+
+  const btn = document.getElementById('cf_submit');
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="animation:spin .8s linear infinite"><path d="M12 2a10 10 0 1 0 10 10"/></svg> Sending...';
+  btn.disabled = true;
+
+  try {
+    await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      from_name: first + (last ? ' '+last : ''),
+      reply_to:  email,
+      subject:   subject || 'Portfolio Contact',
+      message:   message,
     });
-    if(res.ok){
-      formEl.style.display='none';
-      successEl.style.display='flex';
-      setTimeout(closeModal,3200);
-    } else {
-      btn.textContent='Try Again';btn.disabled=false;
-    }
-  } catch{btn.textContent='Try Again';btn.disabled=false;}
+    formEl.style.display  = 'none';
+    successEl.style.display = 'flex';
+    setTimeout(closeModal, 3200);
+  } catch(err) {
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg> Send Message';
+    btn.disabled = false;
+    alert('Could not send — make sure your EmailJS keys are configured in the code.');
+  }
 });
 
 /* ── NEURAL NETWORK SKILLS ── */
